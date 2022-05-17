@@ -62,11 +62,5 @@ bc_avg = mean(bc(:));
 lambda_ab = 1/ab_avg;
 threshold_ab = (-log(0.05))/lambda_ab;
 
-lambda_bc = 1/bc_avg;
-threshold_bc = (-log(0.05))/lambda_bc;
-
 % Binarisation
-ab_bin = ab > threshold_ab;
-bc_bin = bc > threshold_bc;
-
-
+a_img = im2bw()

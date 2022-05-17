@@ -68,6 +68,9 @@ classdef parser
             % Remove unrequried data
             csv = removevars(csv, {'Var7','Var8','Var9','Var10'});
 
+            % Assign variables names for readibility
+            csv.Properties.VariableNames = {'Frame','TackID','x','y','width','height'};
+
             imageData.csv = csv;
 
         end
