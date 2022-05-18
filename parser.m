@@ -8,6 +8,7 @@ classdef parser
         nameTemplate % Naming scheme of image files
         frame % When attempting to load a single frame
         csv % Load trimmed gt.txt data
+        numberOfFrames %
     end
 
     methods
@@ -27,6 +28,7 @@ classdef parser
             % Determine number of images in selection by calculating the
             % size of the array
             numberOfFrames = length(array);
+            imageData.numberOfFrames = numberOfFrames;
 
             % Assign frameRange property by first checking if it has been
             % specified
