@@ -69,4 +69,8 @@ threshold_bc = (-log(0.05))/lambda_bc;
 ab_bin = ab > threshold_ab;
 bc_bin = bc > threshold_bc;
 
+% AND
+b_final = ab_bin & bc_bin;
+
+%% Racism
 
