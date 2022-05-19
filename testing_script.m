@@ -3,7 +3,7 @@ clear; clc;
 
 fileLocation = 'C:\Users\vraj\OneDrive - The University of Western Australia\Uni\2022\Computer Vision\Project\VISO\mot\car\001';
 nameTemplate = '%06d';
-frameRange = [10 80];
+frameRange = [1 20];
 
 %% Generatre initial data
 p1 = parser(fileLocation, nameTemplate, frameRange)
