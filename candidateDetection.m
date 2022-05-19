@@ -56,13 +56,7 @@ function [candidates]=candidateDetection(p)
                 temp{row,col} = binary_12 & binary_13;
                 arr{i-p.frameRange(1)} = temp;
             end
-
-            % Display binary image 
-          
-%             binary_image = cell2mat(arr);
-%             imshow(binary_image);
-%             drawnow;
-%             pause(0.01);
+            
         end
         
         % Combine blocks into single matrix and place in arr
