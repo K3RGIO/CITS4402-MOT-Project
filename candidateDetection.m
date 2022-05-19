@@ -12,7 +12,7 @@ p = parser(fileLocation, nameTemplate, frameRange) %frame range not specified be
 p_gt = p.read_csv();
 
 
-%% Lets do this shit
+%% Lets do this 
 % function ObjectDetectionButtonPushed(app, event)
     % Split into 30x30 pixel regions
     for i = p.frameRange(1)+1:p.frameRange(2)-1
