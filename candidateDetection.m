@@ -1,4 +1,4 @@
-function [candidates]=candidateDetection(p)
+function [bin, gryimg]=candidateDetection(p)
     % Split into 30x30 pixel regions
     for i = p.frameRange(1)+1:p.frameRange(2)-1
         % Load images at i-1, i and i+1
@@ -60,8 +60,8 @@ function [candidates]=candidateDetection(p)
         end
         
         % Combine blocks into single matrix and place in arr
-        arr{i-p.frameRange(1)} = cell2mat(arr{i-1});        
-
+        arr{i-p.frameRange(1)} = cell2mat(arr{i-1});
+        gryimg{i-p.frameRange(1)} = img_1_bw;
     end
     
-    candidates = arr;
+    bin = arr;
