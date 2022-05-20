@@ -57,20 +57,23 @@ for y = 1:length(bin)
         % If that calculated gray-level value is within the interval,
         % classify that pixel as a candidate pixel
         for m = 1: numel(search_window)
-            if binary_window(m) == 1
+%             if binary_window(m) == 1
                 if search_window(m) > interval(1) && search_window(m) < interval(2)
                     binary_window(m) = 1;
                 else
                     binary_window(m) = 0;
                 end
-            end
+%             end
         end
         region_grown(lowRow:highRow, lowCol: highCol) = binary_window;
     end
     
     image{y} = region_grown;
 end
-Discriminants = image;
+% Discriminants = image;
+
+
+
 end
 
 

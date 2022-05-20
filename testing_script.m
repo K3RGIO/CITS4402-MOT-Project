@@ -23,3 +23,5 @@ p3 = p2.read_csv()
 
 %% Candidate Discrimination
 candidates = candidateDiscrimination(bin, gryimg);
+figure, imshow(candidates{1});
+figure, imshow(bin{1});
