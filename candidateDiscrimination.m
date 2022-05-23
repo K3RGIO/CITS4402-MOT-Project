@@ -1,4 +1,4 @@
-function [Discriminants] = candidateDiscrimination(bin, gryimg)
+function [Discriminants, bbox_gt, bbox_pred] = candidateDiscrimination(bin, gryimg,p)
 %% Region Growing
 % Inputs: Binary image created during candidate detection and it's matching
 % grayscale image
@@ -97,16 +97,43 @@ Discriminants = image;
 % Inputs: Binary region grown images of each frame
 % Outputs: Bounding box of tracked vehicles
 
+% Initialise gt.txt data
+gt_csv = table2array(p.read_csv().csv);
+
+% Create empty array to store gt data for matched frames
+% gt_data=[];
+% counter = 1; % counter for looping
+
 for j = 1:length(image)
     hBlobAnalysis = vision.BlobAnalysis('MajorAxisLengthOutputPort',true,'EccentricityOutputPort',true,'ExtentOutputPort',true, ...
-        'MaximumCount',100000000,'MinimumBlobArea',5,'MaximumBlobArea',1000);
+        'MaximumCount',100000000,'MinimumBlobArea',5,'MaximumBlobArea',300);
     [area, centroid, bbox, majoraxis, eccentricity, extent] = hBlobAnalysis(image{y});
 
+
+    % Scan through gt.txt and extract frames that match the frameRange to
+    % gt_data
+    % Create empty array to store gt data for matched frames
+    gt_data=[];
+    counter = 1; % counter for looping
+    for gt = 1:size(gt_csv,1)
+        if gt_csv(gt,1) == j+p.frameRange(1)
+            gt_data(counter, :) = gt_csv(gt,:);
+            counter = counter+1;
+        end
+    end 
+    
+    % Calculate bounding boxes from gt.txt and compare with calculated
+    % bounding boxes
+    bbox_pred = bbox;
+    bbox_gt = gt_data(:,3:6);
+    
+    bboxOverlapRatio(bbox_gt,bbox_pred,'Union');
+
     % Setup thresholds
-    th_area = [40,80];
-    th_extent = [0.3, 0.9];
-    th_majoraxis = [3, 15];
-    th_eccentricity = [0.2, 0.8];
+    th_area = [5,50];
+    th_extent = [0.01, 0.99];
+    th_majoraxis = [3, 30];
+    th_eccentricity = [0.1, 0.9];
 
     % Threshold morphological cues
     k = 1;
@@ -131,6 +158,13 @@ for j = 1:length(image)
         end
     end
 
+    % Plot centroids around image
+    p2 = p.file_index(j + p.frameRange(1));
+    figure, imshow(p2.frame);
+    hold on;
+    for u = 1: length(new_bbox)
+            rectangle('Position', [(new_bbox(u,1)),(new_bbox(u,2)),(new_bbox(u,3)),(new_bbox(u,4))],'EdgeColor',[1, 0, 0, 0.7],'FaceColor',[0,0,1,0.2],'LineWidth',2);
+    end
 end
 
 

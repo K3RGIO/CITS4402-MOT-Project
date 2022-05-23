@@ -71,8 +71,12 @@ classdef parser
             csv = removevars(csv, {'Var7','Var8','Var9','Var10'});
 
             % Assign variables names for readibility
-            csv.Properties.VariableNames = {'Frame','TackID','x','y','width','height'};
+            csv.Properties.VariableNames = {'Frame','TrackID','x','y','width','height'};
 
+            % fileter for frame range
+            % table_filtered = table(table.Frame == 1, :);
+
+            %
             imageData.csv = csv;
 
         end
