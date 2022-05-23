@@ -1,6 +1,9 @@
 function [bin, gryimg]=candidateDetection(p)
     % Split into 30x30 pixel regions
+
     for i = p.frameRange(1)+1:p.frameRange(2)-1
+        disp("Processing image " + i)
+
         % Load images at i-1, i and i+1
         img_1 = p.file_index(i).frame;
         img_2 = p.file_index(i-1).frame;
