@@ -1,4 +1,4 @@
-function [Discriminants, centroid, bbox] = candidateDiscrimination(bin, gryimg,p)
+function [Discriminants, centroid, bbox] = candidateDiscrimination(bin, gryimg,p, area_threshold, extent_threshold, majoraxis_threshold, eccentricity_threshold)
 %% Region Growing
 % Inputs: Binary image created during candidate detection and it's matching
 % grayscale image
@@ -198,10 +198,10 @@ for j = 1:length(image)
     %}
 
     % Setup thresholds
-    th_area = [0,100];
-    th_extent = [0.4, 1];
-    th_majoraxis = [5, 20];
-    th_eccentricity = [0.2, 0.8];
+    th_area = area_threshold;
+    th_extent = extent_threshold;
+    th_majoraxis = majoraxis_threshold;
+    th_eccentricity = eccentricity_threshold;
 
     % Threshold morphological cues
     k = 1;
