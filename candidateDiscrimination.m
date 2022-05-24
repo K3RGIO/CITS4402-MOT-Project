@@ -73,13 +73,13 @@ for y = 1:length(bin)
         % If that calculated gray-level value is within the interval,
         % classify that pixel as a candidate pixel
         for m = 1: numel(search_window)
-%             if binary_window(m) == 1
+                % if binary_window(m) == 1
                 if search_window(m) > interval(1) && search_window(m) < interval(2)
                     binary_window(m) = 1;
                 else
                     binary_window(m) = 0;
                 end
-%             end
+                %end
         end
         region_grown(lowRow:highRow, lowCol: highCol) = binary_window;
     end
@@ -98,14 +98,14 @@ Discriminants = image;
 % Initialise gt.txt data
 gt_csv = table2array(p.read_csv().csv);
 
-% Create empty array to store gt data for matched frames
-% gt_data=[];
-% counter = 1; % counter for looping
+% Pre-allocate array for output
+centroid_temp = cell(1,length(bin));
+bbox_temp = cell(1,length(bin));
 
 for j = 1:length(image)
     hBlobAnalysis = vision.BlobAnalysis('MajorAxisLengthOutputPort',true,'EccentricityOutputPort',true,'ExtentOutputPort',true, ...
         'MaximumCount',100000000,'MinimumBlobArea',5,'MaximumBlobArea',300);
-    [area, centroid, bbox, majoraxis, eccentricity, extent] = hBlobAnalysis(image{y});
+    [area, centroid, bbox, majoraxis, eccentricity, extent] = hBlobAnalysis(image{j});
 
 
     % Scan through gt.txt and extract frames that match the frameRange to
@@ -137,7 +137,7 @@ for j = 1:length(image)
         % Calculate the intersection over union
         for b = 1:length(bbox_gt)
             % If the intersection over union is greater than 0.7
-            if bboxOverlapRatio(bbox_pred(a,:),bbox_gt(b,:)) > 0.02
+            if bboxOverlapRatio(bbox_pred(a,:),bbox_gt(b,:)) > 0.1
                 % Store the index in the accepted_data array
                 accepted_data = [accepted_data, a];
                 % Break out of the loop
@@ -194,7 +194,7 @@ for j = 1:length(image)
     std_rejected_eccentricity = std(double(rejected_eccentricity));
 
 
-    histfit(double(accepted_eccentricity));
+    % figure, histfit(double(accepted_area));
     %}
 
     % Setup thresholds
@@ -206,7 +206,7 @@ for j = 1:length(image)
     % Threshold morphological cues
     k = 1;
 
-    % Setup empt array
+    % Setup empt arrays
     new_area= []; new_extent = []; new_majoraxis = []; new_eccentricity = []; new_bbox = []; new_centroid = [];
     
     % Threshold each candidate cluster based on the above determined thresholds
@@ -226,8 +226,9 @@ for j = 1:length(image)
         end
     end
 
-    centroid = new_centroid;
-    bbox = new_bbox;
+
+    centroid_temp{j} = new_centroid;
+    bbox_temp{j} = new_bbox;
 
     % Plot centroids around image
     % p2 = p.file_index(j + p.frameRange(1));
@@ -237,3 +238,6 @@ for j = 1:length(image)
     %         rectangle('Position', [(new_bbox(u,1)),(new_bbox(u,2)),(new_bbox(u,3)),(new_bbox(u,4))],'EdgeColor',[1, 0, 0, 0.7],'FaceColor',[0,0,1,0.2],'LineWidth',2);
     % end
 end
+
+centroid = centroid_temp;
+bbox = bbox_temp;
