@@ -1,13 +1,13 @@
 function [bin, gryimg]=candidateDetection(p)
     % Split into 30x30 pixel regions
 
-    for i = p.frameRange(1)+1:p.frameRange(2)-1
+    for i = p.frameRange(1)+5:p.frameRange(2)-5
         disp("Processing image " + i)
 
-        % Load images at i-1, i and i+1
+        % Load images at i-5, i and i+5
         img_1 = p.file_index(i).frame;
-        img_2 = p.file_index(i-1).frame;
-        img_3 = p.file_index(i+1).frame;
+        img_2 = p.file_index(i-5).frame;
+        img_3 = p.file_index(i+5).frame;
 
         % Convert Image to greyscale
         img_1_bw = rgb2gray(img_1);
@@ -33,7 +33,7 @@ function [bin, gryimg]=candidateDetection(p)
             % Number of rows = wholeBlockRows + 1
             % Number of cols = wholeBlockCols + 1
 
-        arr{i-p.frameRange(1)} = cell(wholeBlockRows+1, wholeBlockCols+1); % creating empty array to input results into
+        arr{i-p.frameRange(1)-4} = cell(wholeBlockRows+1, wholeBlockCols+1); % creating empty array to input results into
 
         for row = 1:wholeBlockRows+1
             for col = 1:wholeBlockCols+1
@@ -55,16 +55,16 @@ function [bin, gryimg]=candidateDetection(p)
                 binary_13 = abs_diff_13 > threshold_13;
         
                 % Save binary frame to array
-                temp = arr{i-p.frameRange(1)};
+                temp = arr{i-p.frameRange(1)-4};
                 temp{row,col} = binary_12 & binary_13;
-                arr{i-p.frameRange(1)} = temp;
+                arr{i-p.frameRange(1)-4} = temp;
             end
             
         end
         
         % Combine blocks into single matrix and place in arr
-        arr{i-p.frameRange(1)} = cell2mat(arr{i-1});
-        gryimg{i-p.frameRange(1)} = img_1_bw;
+        arr{i-p.frameRange(1)-4} = cell2mat(arr{i-p.frameRange(1)-4});
+        gryimg{i-p.frameRange(1)-4} = img_1_bw;
     end
     
     bin = arr;
