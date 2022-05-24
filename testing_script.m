@@ -3,9 +3,9 @@ clear; clc;
 
 fileLocation = 'C:\Users\vraj\OneDrive - The University of Western Australia\Uni\2022\Computer Vision\Project\VISO\mot\car\001';
 nameTemplate = '%06d';
-frameRange = [1 25];
+frameRange = [100 130];
 
-%% Generatre initial data
+%% Generate initial data
 p = parser(fileLocation, nameTemplate, frameRange);
 
 %% Extract single frame and display it
@@ -21,7 +21,7 @@ p3 = p2.read_csv()
 [bin, gryimg] = candidateDetection(p);
 
 %% Candidate Discrimination
-[candidates, gt_data, bbox_pred] = candidateDiscrimination(bin, gryimg,p);
+[candidates, centroid, bbox] = candidateDiscrimination(bin, gryimg,p);
 % figure, imshow(candidates{1});
 % figure, imshow(bin{10});
 
