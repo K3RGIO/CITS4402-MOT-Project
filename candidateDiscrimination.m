@@ -1,10 +1,8 @@
-function [Discriminants, bbox_gt, bbox_pred] = candidateDiscrimination(bin, gryimg,p)
+function [Discriminants, centroid, bbox] = candidateDiscrimination(bin, gryimg,p)
 %% Region Growing
 % Inputs: Binary image created during candidate detection and it's matching
 % grayscale image
 % Outpits: Binary region grown image
-
-
 
 for y = 1:length(bin)
     disp("Processing image " + y) %debudding message
@@ -21,7 +19,7 @@ for y = 1:length(bin)
     pixel_col = centroid(:,2);
 
     % Determine the location of the white pixels in the binary image
-%     [pixel_row, pixel_col] = find(binary_img);
+    % [pixel_row, pixel_col] = find(binary_img);
 
     % Create 11x11 search window around each candidate
     for i = 1: length(pixel_row)
@@ -127,13 +125,83 @@ for j = 1:length(image)
     bbox_pred = bbox;
     bbox_gt = gt_data(:,3:6);
     
-    bboxOverlapRatio(bbox_gt,bbox_pred,'Union');
+    %{
+        
+    % Setup arrays required in future computations
+    accepted_data = []; rejected_data = [];
+    accepted_area=[]; accepted_extent=[]; accepted_majoraxis=[]; accepted_eccentricity=[];
+    rejected_area=[]; rejected_extent=[]; rejected_majoraxis=[]; rejected_eccentricity=[];
+
+    % For all predicted bounding boxes
+    for a = 1:length(bbox_pred)
+        % Calculate the intersection over union
+        for b = 1:length(bbox_gt)
+            % If the intersection over union is greater than 0.7
+            if bboxOverlapRatio(bbox_pred(a,:),bbox_gt(b,:)) > 0.02
+                % Store the index in the accepted_data array
+                accepted_data = [accepted_data, a];
+                % Break out of the loop
+                break;
+            end
+        end
+    
+
+        %For all indexes that are not accepted, add them to the rejected_data array
+        if ismember(a,accepted_data)
+            % Do nothing
+        else
+            rejected_data = [rejected_data, a];
+        end
+
+    end
+
+    % Calculate the morphological cues
+    for c = 1:length(accepted_data)
+        index = accepted_data(c);
+        accepted_area = [accepted_area, area(index)];
+        accepted_extent = [accepted_extent, extent(index)];
+        accepted_majoraxis = [accepted_majoraxis, majoraxis(index)];
+        accepted_eccentricity = [accepted_eccentricity, majoraxis(index)];
+    end
+ 
+    for d = 1:length(rejected_data)
+        index = rejected_data(d);
+        rejected_area = [rejected_area, area(index)];
+        rejected_extent = [rejected_extent, extent(index)];
+        rejected_majoraxis = [rejected_majoraxis, majoraxis(index)];
+        rejected_eccentricity = [rejected_eccentricity, majoraxis(index)];
+    end
+
+    % Calculate mean and standard deviation for all cues
+    mean_accepted_area = mean(accepted_area,'all');
+    mean_accepted_extent = mean(accepted_extent,'all');
+    mean_accepted_majoraxis = mean(accepted_majoraxis, 'all');
+    mean_accepted_eccentricity = mean(accepted_eccentricity, 'all');
+
+    std_accepted_area = std(double(accepted_area));
+    std_accepted_extent = std(double(accepted_extent));
+    std_accepted_majoraxis = std(double(accepted_majoraxis));
+    std_accepted_eccentricity = std(double(accepted_eccentricity));
+
+    mean_rejected_area = mean(rejected_area,'all');
+    mean_rejected_extent = mean(rejected_extent,'all');
+    mean_rejected_majoraxis = mean(rejected_majoraxis, 'all');
+    mean_rejected_eccentricity = mean(rejected_eccentricity, 'all');
+    
+    std_rejected_area = std(double(rejected_area));
+    std_rejected_extent = std(double(rejected_extent));
+    std_rejected_majoraxis = std(double(rejected_majoraxis));
+    std_rejected_eccentricity = std(double(rejected_eccentricity));
+
+
+    histfit(double(accepted_eccentricity));
+    %}
 
     % Setup thresholds
-    th_area = [5,50];
-    th_extent = [0.01, 0.99];
-    th_majoraxis = [3, 30];
-    th_eccentricity = [0.1, 0.9];
+    th_area = [0,100];
+    th_extent = [0.4, 1];
+    th_majoraxis = [5, 20];
+    th_eccentricity = [0.2, 0.8];
 
     % Threshold morphological cues
     k = 1;
@@ -158,19 +226,14 @@ for j = 1:length(image)
         end
     end
 
+    centroid = new_centroid;
+    bbox = new_bbox;
+
     % Plot centroids around image
-    p2 = p.file_index(j + p.frameRange(1));
-    figure, imshow(p2.frame);
-    hold on;
-    for u = 1: length(new_bbox)
-            rectangle('Position', [(new_bbox(u,1)),(new_bbox(u,2)),(new_bbox(u,3)),(new_bbox(u,4))],'EdgeColor',[1, 0, 0, 0.7],'FaceColor',[0,0,1,0.2],'LineWidth',2);
-    end
+    % p2 = p.file_index(j + p.frameRange(1));
+    % figure, imshow(p2.frame);
+    % hold on;
+    % for u = 1: length(new_bbox)
+    %         rectangle('Position', [(new_bbox(u,1)),(new_bbox(u,2)),(new_bbox(u,3)),(new_bbox(u,4))],'EdgeColor',[1, 0, 0, 0.7],'FaceColor',[0,0,1,0.2],'LineWidth',2);
+    % end
 end
-
-
-
-
-
-
-
-
