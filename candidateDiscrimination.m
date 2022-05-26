@@ -1,8 +1,7 @@
 function [Discriminants, centroid, bbox] = candidateDiscrimination(bin, gryimg,p, area_threshold, extent_threshold, majoraxis_threshold, eccentricity_threshold)
 %% Region Growing
-% Inputs: Binary image created during candidate detection and it's matching
-% grayscale image
-% Outpits: Binary region grown image
+% Inputs: Binary image created during candidate detection and its matching grayscale image
+% Outputs: Binary region grown image, centroids of detected vehicle and its bounding box
 
 for y = 1:length(bin)
     disp("Processing image " + y) %debudding message
