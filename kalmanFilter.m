@@ -61,10 +61,8 @@ function [output] = kalmanFilter(self, bin, centroid, bbox)
 
     Y = H .* state_vector_i + R;
 
-    % 1. Initilise tracks for the shit that we already know of.
-    % 2. Create new tracks if new shit turns up.
-    % 3. 
+   
 
-    output = %something
+    output
 end
 
