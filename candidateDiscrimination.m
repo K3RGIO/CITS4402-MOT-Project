@@ -4,7 +4,7 @@ function [Discriminants, centroid, bbox] = candidateDiscrimination(bin, gryimg,p
 % Outputs: Binary region grown image, centroids of detected vehicle and its bounding box
 
 for y = 1:length(bin)
-    disp("Processing image " + y) %debudding message
+    disp("Processing image " + y) %debugging message
     binary_img = bin{y};
     gray_img = gryimg{y};
 
@@ -205,7 +205,7 @@ for j = 1:length(image)
     % Threshold morphological cues
     k = 1;
 
-    % Setup empt arrays
+    % Setup empty arrays
     new_area= []; new_extent = []; new_majoraxis = []; new_eccentricity = []; new_bbox = []; new_centroid = [];
     
     % Threshold each candidate cluster based on the above determined thresholds
