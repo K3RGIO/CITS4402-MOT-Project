@@ -46,7 +46,7 @@ function [bin, gryimg]=candidateDetection(p)
                 avg_13 = mean(abs_diff_13, 'all');
         
                 % Apply thresholding as specified in reference paper
-                % lamba = 1/avg, threshold = -ln(0.05)/lambda = -ln(0.05)*avg
+                % lambda = 1/avg, threshold = -ln(0.05)/lambda = -ln(0.05)*avg
                 threshold_12 = -log(0.05)*avg_12;
                 threshold_13 = -log(0.05)*avg_13;
         
@@ -62,7 +62,7 @@ function [bin, gryimg]=candidateDetection(p)
             
         end
         
-        % Combine blocks into single matrix and place in arr
+        % Combine blocks into single matrix and place in array
         arr{i-p.frameRange(1)-4} = cell2mat(arr{i-p.frameRange(1)-4});
         gryimg{i-p.frameRange(1)-4} = img_1_bw;
     end
