@@ -56,7 +56,7 @@ HYPOTHESES = Outputs of the discrimination (true vehicles and some noise). Essen
 MOTION MODEL Attach a state vector to each current track 
     Stores x and y coordinates of centroid, velocity and acceleration of tracked object
     ```Matlab
-        x(i) = [x y vx vy ax ay]
+    x(i) = [x y vx vy ax ay]
     ```
 
 The state vector for the next frame `x(i+1)` is given by matrix math where the time between frames `(tau) = 1`
