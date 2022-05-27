@@ -84,7 +84,7 @@ MOTION MODEL Same as before
     Position set to centroid of detected pixels path (candidate) and
     default speed and acceleration are 0
 	```Matlab
-        x(new) = [x y 0 0 0 0]
+	x(new) = [x y 0 0 0 0]
 	```
 Keep track of covariance matrix Pk which is initialised as equal to `Qk`
 
