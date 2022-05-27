@@ -3,6 +3,7 @@
 The GUI consists of different tabs corresponding to the following steps in the project.
 
 1. *PARSER*
+
 	Input: Selected folder and optional frame range. 
 	Output: Loaded frames.
 
