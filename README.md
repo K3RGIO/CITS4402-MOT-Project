@@ -1,23 +1,22 @@
-CITS4402 README FILE
+# CITS4402 README FILE
 
 The GUI consists of different tabs corresponding to the following steps in the project.
 
-1. PARSER
+1. *PARSER*
 	Input: Selected folder and optional frame range. 
 	Output: Loaded frames.
 
 The parser enables the user to load the relevant project data. Once a folder is selected, frames are only loaded when queried (i.e. when the 'Load Data' button is pushed). If the frame range is not manually set, the parser automatically loads all frames in that folder and defines the frame range in the external function. The loaded frames are then displayed in the 'Data Preview' panel. 
 
-2. CANDIDATE DETECTION
+2. *CANDIDATE DETECTION*
 	Input: for each frame index n from 1 to N-1, this step takes as input the frames at index n-k, n and n+k. 
-	Output: for each frame index n from 1 to N-1, this step outputs a binary image representing
-candidate small objects.
+	Output: for each frame index n from 1 to N-1, this step outputs a binary image representing candidate small objects.
 
 This step uses a set frame interval (k) of 5 as this was found to produce more accurate results. If the frame interval is set too low, the inter-frame differences are predominantly artefacts due to regular and irregular noises that are present in consecutive frames. 
 
 These frames are split into 30 x 30 pixel blocks. The inter-frame differences and averages are then computed to threshold the images and extract candidates to produce a series of binary images. These are displayed in the 'Identified Candidates' panel in the GUI. 
 
-3. CANDIDATE MATCH DISCRIMINATION
+3. *CANDIDATE MATCH DISCRIMINATION*
 	Input: for each frame index n from 1 to N-1, this step takes as input a binary image representing the candidate small objects
 	Output: for each frame index n from 1 to N-1, this step outputs the bounding box and centroid of each candidate small object
 
@@ -27,7 +26,7 @@ Morphological cue based discrimination is then performed. This utilises vision.b
 
 The mean and standard deviation of all cues is used to plot and analyse the properties of all accepted and rejected candidates. Normalising and overlapping the accepted and rejected cues enables the calibration of each morphological cue to determine the interval. Ideally, the maximum would be chosen as the highest proportion of accepted regions and lowest proportion of rejected regions. The minimum can be set as the lower bound of the accepted region. However, as both distributions overlapped significantly, this method was not viable and default thresholds were manually determined. The GUI enables the user to manually choose thresholds as well. 
 
-4. KALMAN FILTER AND TRACKING LOOP 
+4. *KALMAN FILTER AND TRACKING LOOP*
 Although this step is incomplete, the "kalmanFilter.m" file contains the initial attempt and the following explanation covers further steps that would have been done. Ultimately, as the prior steps were more timeconsuming than anticipated, there was little time left to create and troubleshoot the tracking loop. 
 
 	Input: for each frame index n from 1 to N-1, this step takes as input a binary image representing candidate small objects, as well as the state of the tracker (the Kalman state vectors for each tracks, and the corresponding covariances estimates) from the previous frame
@@ -39,10 +38,11 @@ HYPOTHESES = Outputs of the discrimination (true vehicles and some noise). Essen
 INITIALISATION. Setting up motion and observation models. Use this motion model to predict the next position of the track....
 
 MOTION MODEL Attach a state vector to each current track 
-    Stores x and y coordinates of centroid, velocity and acceleration of tracked object 
+    Stores x and y coordinates of centroid, velocity and acceleration of tracked object
+    ```Matlab
         x(i) = [x y vx vy ax ay]
-
-The state vector for the next frame x(i+1) is given by matrix math where the time between frames (tau) = 1
+	```
+The state vector for the next frame `x(i+1)` is given by matrix math where the time between frames `(tau) = 1`
 
 OBSERVATION MODEL Extract observation (position) from the state vector (of the next frame?) by matrix multiplication
 
@@ -59,9 +59,11 @@ Initialising new tracks...
 
 MOTION MODEL Same as before 
     Position set to centroid of detected pixels path (candidate) and
-    default speed and acceleration are 0 
+    default speed and acceleration are 0
+	```Matlab
         x(new) = [x y 0 0 0 0]
-Keep track of covariance matrix Pk which is initialised as equal to Qk 
+	```
+Keep track of covariance matrix Pk which is initialised as equal to `Qk`
 
 ---------------------------- STEP 2 ------------------------------------
 PREDICTION. Kalman filter prediction step for tracks. Use a measure of the state of
@@ -69,17 +71,21 @@ the track (state vector) with the motion prediction to get a filtered
 state of the track...
 
 Update the track position usign the MOTION MODEL, based on values respective
-to k and k-1, and compute:
+to `k` and `k-1`, and compute:
+```Matlab
     x_pred_pri Predicted state vector 
     P_pred_pri Predicted estimate covariance 
+```
 
 ---------------------------- STEP 3 ------------------------------------
 HYPOTHESIS TO TRACK ASSOCIATION - finding the optimal match between
 multiple tracks and multiple hypotheses...
 
-Use inbuilt hungarian algorithm in Matlab "assignDetectionsToTracks"
+Use inbuilt hungarian algorithm in Matlab `assignDetectionsToTracks`
+```Matlab
     [assignments,unassignedTracks,unassignedDetections] = assignDetectionsToTracks(costMatrix,costOfNonAssignment)
     [assignments,unassignedTracks,unassignedDetections] = assignDetectionsToTracks(costMatrix,unassignedTrackCost,unassignedDetectionCost)
+```
 
 ---------------------------- STEP 4 ------------------------------------
 Nearest searching, correction and termination. Deal with unassigned tracks...
@@ -97,22 +103,29 @@ Unassigned hypotheses assigned to new tracks that are initialised (Step
 ---------------------------- STEP 5 ------------------------------------
 UPDATE the state estimate of the Kalman filter...
 
-Measured values of zk are centroids of each cluster in the hypothesis map
+Measured values of `zk` are centroids of each cluster in the hypothesis map
 
-Compute the innovation (error) between measurement and prediction 
+Compute the innovation (error) between measurement and prediction
+```Matlab
     yk = zk - Hk*x_pred_pri
+```
 
 Compute covariance of innovation
+```Matlab
     Sk = Hk*P_pred_pri*HkT + Rk
-
+```
 Compute optimal Kalman gain
+```Matlab
     Kk
+```
 
 Compute updated state estimate 
     x_pred_post
 
-Compute updated state covariance  
+Compute updated state covariance
+```Matlab
     x_pred_post
+```
 
 Use ^ in the next iteration of the algorithm 
 
@@ -122,11 +135,5 @@ Use ^ in the next iteration of the algorithm
 Do above steps for the next frame using input from previous frame
 
 Measure performance of the model by reporting the precision, recall and
-F1 scores of the model based on numbers of true positives and true
+`F1` scores of the model based on numbers of true positives and true
 negatives 
-
-
-
-
-
-
