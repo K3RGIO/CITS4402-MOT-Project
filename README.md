@@ -175,9 +175,9 @@ Compute updated state covariance
 Use ^ in the next iteration of the algorithm 
 
 
-------------------------------------------------------------------------
-                          Tracking Loop
-------------------------------------------------------------------------
+
+_**Tracking Loop**_
+
 
 Do above steps for the next frame using input from previous frame
 
