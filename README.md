@@ -1,15 +1,16 @@
 # CITS4402 README FILE
----
 
 The GUI consists of different tabs corresponding to the following steps in the project.
 
 ### **1. PARSER**
 
-_Input_: Selected folder and optional frame range.
+	> _Input_: Selected folder and optional frame range.
 
-_Output_: Loaded frames.
+	> _Output_: Loaded frames.
 
 The parser enables the user to load the relevant project data. Once a folder is selected, frames are only loaded when queried (i.e. when the 'Load Data' button is pushed). If the frame range is not manually set, the parser automatically loads all frames in that folder and defines the frame range in the external function. The loaded frames are then displayed in the 'Data Preview' panel. 
+
+---
 
 ### **2. CANDIDATE DETECTION**
 _Input_: for each frame index n from 1 to N-1, this step takes as input the frames at index n-k, n and n+k. 
@@ -19,6 +20,8 @@ _Output_: for each frame index n from 1 to N-1, this step outputs a binary image
 This step uses a set frame interval (k) of 5 as this was found to produce more accurate results. If the frame interval is set too low, the inter-frame differences are predominantly artefacts due to regular and irregular noises that are present in consecutive frames. 
 
 These frames are split into 30 x 30 pixel blocks. The inter-frame differences and averages are then computed to threshold the images and extract candidates to produce a series of binary images. These are displayed in the 'Identified Candidates' panel in the GUI. 
+
+---
 
 ### **3. CANDIDATE MATCH DISCRIMINATION**
 _Input_: for each frame index n from 1 to N-1, this step takes as input a binary image representing the candidate small objects
@@ -30,6 +33,8 @@ The minimum blob area is specified as 3, to find the centroids and bounding boxe
 Morphological cue based discrimination is then performed. This utilises vision.blob.analysis to compute the morphological information. Bounding boxes from gt.txt, of the relevant frames, is compared to calculated bounding boxes using the intersection over union (IoU) metric. If this value is greater than 0.1, the regions are considered matching at this stage. Although this is lower than the optimal value of 0.7, lowering the acceptable limit was necessary at this stage to find matching regions. Regions that are not accepted are stored as rejected data. 
 
 The mean and standard deviation of all cues is used to plot and analyse the properties of all accepted and rejected candidates. Normalising and overlapping the accepted and rejected cues enables the calibration of each morphological cue to determine the interval. Ideally, the maximum would be chosen as the highest proportion of accepted regions and lowest proportion of rejected regions. The minimum can be set as the lower bound of the accepted region. However, as both distributions overlapped significantly, this method was not viable and default thresholds were manually determined. The GUI enables the user to manually choose thresholds as well. 
+
+---
 
 ### **4. KALMAN FILTER AND TRACKING LOOP**
 
