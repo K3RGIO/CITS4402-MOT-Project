@@ -67,16 +67,16 @@ classdef parser
             % Read csv data
             csv = readtable(csvLocation);
 
-            % Remove unrequried data
+            % Remove unrequired data
             csv = removevars(csv, {'Var7','Var8','Var9','Var10'});
 
             % Assign variables names for readibility
             csv.Properties.VariableNames = {'Frame','TrackID','x','y','width','height'};
 
-            % fileter for frame range
+            % filter for frame range
             % table_filtered = table(table.Frame == 1, :);
 
-            %
+            
             imageData.csv = csv;
 
         end
