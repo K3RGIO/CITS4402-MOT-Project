@@ -13,9 +13,9 @@ The parser enables the user to load the relevant project data. Once a folder is 
 ---
 
 ### **2. CANDIDATE DETECTION**
-_Input_: for each frame index n from 1 to N-1, this step takes as input the frames at index n-k, n and n+k. 
+> _Input_: for each frame index n from 1 to N-1, this step takes as input the frames at index n-k, n and n+k. 
 
-_Output_: for each frame index n from 1 to N-1, this step outputs a binary image representing candidate small objects.
+> _Output_: for each frame index n from 1 to N-1, this step outputs a binary image representing candidate small objects.
 
 This step uses a set frame interval (k) of 5 as this was found to produce more accurate results. If the frame interval is set too low, the inter-frame differences are predominantly artefacts due to regular and irregular noises that are present in consecutive frames. 
 
@@ -24,9 +24,9 @@ These frames are split into 30 x 30 pixel blocks. The inter-frame differences an
 ---
 
 ### **3. CANDIDATE MATCH DISCRIMINATION**
-_Input_: for each frame index n from 1 to N-1, this step takes as input a binary image representing the candidate small objects
+> _Input_: for each frame index n from 1 to N-1, this step takes as input a binary image representing the candidate small objects
 
-_Output_: for each frame index n from 1 to N-1, this step outputs the bounding box and centroid of each candidate small object
+> _Output_: for each frame index n from 1 to N-1, this step outputs the bounding box and centroid of each candidate small object
 
 The minimum blob area is specified as 3, to find the centroids and bounding boxes of the candidates. 11 x 11 search windows are created, centred around the coordinates of the candidate centroids. Grayscale values are extracted for the relevant search window and the mean and standard deviation of these pixels is computed. This is normalised and used to threshold the calculated gray-scale values and if it falls within that 0.05-99.5 % quantile interval, the pixel is classified as a candidate pixel and the region growing step is complete. 
 
@@ -50,7 +50,7 @@ HYPOTHESES = Outputs of the discrimination (true vehicles and some noise). Essen
 ---------------------------- STEP 1 ------------------------------------
 
 
-INITIALISATION. Setting up motion and observation models. Use this motion model to predict the next position of the track...
+**INITIALISATION**. Setting up motion and observation models. Use this motion model to predict the next position of the track...
 
 
 MOTION MODEL Attach a state vector to each current track 
