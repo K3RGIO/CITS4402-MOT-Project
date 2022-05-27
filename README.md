@@ -4,9 +4,9 @@ The GUI consists of different tabs corresponding to the following steps in the p
 
 ### **1. PARSER**
 
-	> _Input_: Selected folder and optional frame range.
+> _Input_: Selected folder and optional frame range.
 
-	> _Output_: Loaded frames.
+> _Output_: Loaded frames.
 
 The parser enables the user to load the relevant project data. Once a folder is selected, frames are only loaded when queried (i.e. when the 'Load Data' button is pushed). If the frame range is not manually set, the parser automatically loads all frames in that folder and defines the frame range in the external function. The loaded frames are then displayed in the 'Data Preview' panel. 
 
