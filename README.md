@@ -91,6 +91,7 @@ Keep track of covariance matrix Pk which is initialised as equal to `Qk`
 
 
 ---------------------------- STEP 2 ------------------------------------
+
 PREDICTION. Kalman filter prediction step for tracks. Use a measure of the state of
 the track (state vector) with the motion prediction to get a filtered
 state of the track...
@@ -105,6 +106,7 @@ to `k` and `k-1`, and compute:
 
 
 ---------------------------- STEP 3 ------------------------------------
+
 HYPOTHESIS TO TRACK ASSOCIATION - finding the optimal match between
 multiple tracks and multiple hypotheses...
 
@@ -117,6 +119,7 @@ Use inbuilt hungarian algorithm in Matlab `assignDetectionsToTracks`
 
 
 ---------------------------- STEP 4 ------------------------------------
+
 Nearest searching, correction and termination. Deal with unassigned tracks...
 
 
@@ -134,6 +137,7 @@ Unassigned hypotheses assigned to new tracks that are initialised (Step
 
 
 ---------------------------- STEP 5 ------------------------------------
+
 UPDATE the state estimate of the Kalman filter...
 
 
