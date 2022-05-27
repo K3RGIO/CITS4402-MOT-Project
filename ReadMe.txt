@@ -28,6 +28,8 @@ Morphological cue based discrimination is then performed. This utilises vision.b
 The mean and standard deviation of all cues is used to plot and analyse the properties of all accepted and rejected candidates. Normalising and overlapping the accepted and rejected cues enables the calibration of each morphological cue to determine the interval. Ideally, the maximum would be chosen as the highest proportion of accepted regions and lowest proportion of rejected regions. The minimum can be set as the lower bound of the accepted region. However, as both distributions overlapped significantly, this method was not viable and default thresholds were manually determined. The GUI enables the user to manually choose thresholds as well. 
 
 4. KALMAN FILTER AND TRACKING LOOP 
+Although this step is incomplete, the "kalmanFilter.m" file contains the initial attempt and the following explanation covers further steps that would have been done. Ultimately, as the prior steps were more timeconsuming than anticipated, there was little time left to create and troubleshoot the tracking loop. 
+
 	Input: for each frame index n from 1 to N-1, this step takes as input a binary image representing candidate small objects, as well as the state of the tracker (the Kalman state vectors for each tracks, and the corresponding covariances estimates) from the previous frame
 	Output: a series of tracks, each made up of a Kalman state vector representing the position, speed and acceleration of the tracked small objects
 
