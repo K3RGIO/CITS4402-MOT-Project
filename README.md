@@ -1,4 +1,5 @@
 # CITS4402 README FILE
+---
 
 The GUI consists of different tabs corresponding to the following steps in the project.
 
@@ -34,14 +35,15 @@ The mean and standard deviation of all cues is used to plot and analyse the prop
 
 Although this step is incomplete, the "kalmanFilter.m" file contains the initial attempt and the following explanation covers further steps that would have been done. Ultimately, as the prior steps were more timeconsuming than anticipated, there was little time left to create and troubleshoot the tracking loop. 
 
-	Input: for each frame index n from 1 to N-1, this step takes as input a binary image representing candidate small objects, as well as the state of the tracker (the Kalman state vectors for each tracks, and the corresponding covariances estimates) from the previous frame
-	Output: a series of tracks, each made up of a Kalman state vector representing the position, speed and acceleration of the tracked small objects
+_Input_: for each frame index n from 1 to N-1, this step takes as input a binary image representing candidate small objects, as well as the state of the tracker (the Kalman state vectors for each tracks, and the corresponding covariances estimates) from the previous frame
+
+_Output_: a series of tracks, each made up of a Kalman state vector representing the position, speed and acceleration of the tracked small objects
 
 HYPOTHESES = Outputs of the discrimination (true vehicles and some noise). Essentially the output of the candidate discrimination step. Final outputs of detecting and tracking framework are also hypotheses. 
 
 
 ---------------------------- STEP 1 ------------------------------------
-===test===
+
 
 INITIALISATION. Setting up motion and observation models. Use this motion model to predict the next position of the track...
 
